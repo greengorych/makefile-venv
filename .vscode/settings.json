@@ -1,0 +1,16 @@
+{
+  "editor.detectIndentation": false,
+  "editor.formatOnSave": true,
+  "editor.insertSpaces": true,
+  "editor.tabSize": 2,
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": true,
+  "[makefile]": {
+    "editor.tabSize": 4
+  },
+  "[markdown]": {
+    "editor.wordWrap": "on"
+  }
+}
