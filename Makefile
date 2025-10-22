@@ -3,6 +3,7 @@ VENV              := .venv
 PYTHON            := $(VENV)/bin/python
 PIP               := $(VENV)/bin/pip
 PIP_COMPILE       := $(VENV)/bin/pip-compile
+PIP_SYNC          := $(VENV)/bin/pip-sync
 DEV_REQ_IN_FILE   := dev.requirements.in
 DEV_REQ_OUT_FILE  := dev.requirements.txt
 
@@ -59,7 +60,7 @@ init:
 			$(DEV_REQ_IN_FILE) && \
 		printf "$(GREEN)done$(RESET)\n"; \
     	printf "→ Installing dependency into $(VENV)... "; \
-		$(PIP) install -r $(DEV_REQ_OUT_FILE) --quiet && \
+		$(PIP_SYNC) $(DEV_REQ_OUT_FILE) --quiet && \
 		printf "$(GREEN)done$(RESET)\n"; \
 	fi
 
@@ -83,7 +84,7 @@ upgrade:
 			$(DEV_REQ_IN_FILE) && \
 		printf "$(GREEN)done$(RESET)\n"; \
     	printf "→ Installing dependency updates into $(VENV)$... "; \
-		$(PIP) install -r $(DEV_REQ_OUT_FILE) --quiet && \
+		$(PIP_SYNC) $(DEV_REQ_OUT_FILE) --quiet && \
 		printf "$(GREEN)done$(RESET)\n"; \
 	fi
 
