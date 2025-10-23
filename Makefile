@@ -6,6 +6,7 @@ PIP_COMPILE       := $(VENV)/bin/pip-compile
 PIP_SYNC          := $(VENV)/bin/pip-sync
 DEV_REQ_IN_FILE   := dev.requirements.in
 DEV_REQ_OUT_FILE  := dev.requirements.txt
+DEFAULT_REQ       := pip pip-tools
 
 BLACK   := \033[30m
 RED     := \033[31m
@@ -29,7 +30,13 @@ RESET         := \033[0m
 
 init:
 	@if [ ! -d "$(VENV)" ]; \
-	then \
+		then \
+		printf "→ Generating default development requirements file... "; \
+		> $(DEV_REQ_IN_FILE); \
+		for package in $(DEFAULT_REQ); do \
+			echo $$package >> $(DEV_REQ_IN_FILE); \
+		done; \
+		printf "$(GREEN)done$(RESET)\n"; \
 		printf "→ Creating virtual environment in $(VENV)... "; \
 		python3 -m venv $(VENV) && \
 		printf "$(GREEN)done$(RESET)\n"; \
@@ -41,27 +48,6 @@ init:
 		printf "$(GREEN)done$(RESET)\n"; \
 	else \
 		printf "Virtual environment $(VENV) is already exist\n"; \
-		exit 0; \
-	fi; \
-	if [ ! -f "$(DEV_REQ_IN_FILE)" ]; \
-	then \
-    printf "→ $(DEV_REQ_IN_FILE) file is not found\n"; \
-    exit 0; \
-	else \
-		printf "→ Checking for dependency updates... "; \
-		$(PIP_COMPILE) \
-			--upgrade \
-			--quiet \
-			--no-header \
-			--no-annotate \
-			--strip-extras \
-			--allow-unsafe \
-			--output-file $(DEV_REQ_OUT_FILE) \
-			$(DEV_REQ_IN_FILE) && \
-		printf "$(GREEN)done$(RESET)\n"; \
-    	printf "→ Installing dependency into $(VENV)... "; \
-		$(PIP_SYNC) $(DEV_REQ_OUT_FILE) --quiet && \
-		printf "$(GREEN)done$(RESET)\n"; \
 	fi
 
 upgrade:
