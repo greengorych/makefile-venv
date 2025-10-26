@@ -27,7 +27,7 @@ UNDERLINE_OFF := \033[24m
 DIM           := \033[2m
 RESET         := \033[0m
 
-.PHONY: init upgrade clean
+.PHONY: init upgrade clean init-ansible
 
 init:
 	@if [ ! -d "$(VENV)" ]; \
