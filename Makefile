@@ -112,11 +112,16 @@ upgrade:
 	fi
 
 clean:
-	@if [ -d "$(VENV)" ]; \
-	then \
-		printf "→ Removing $(VENV) virtual environment and dev requirements files... "; \
+clean:
+	@if [ -d "$(VENV)" ]; then \
+		printf "→ Removing $(VENV) virtual environment... "; \
 		rm -rf "$(VENV)"; \
 		printf "$(GREEN)done$(RESET)\n"; \
 	else \
-    	printf "→ Virtual environment $(VENV) is not found\n"; \
+		printf "→ Virtual environment $(VENV) not found\n"; \
+	fi; \
+	if [ -f "$(DEV_REQ_IN_FILE)" ] || [ -f "$(DEV_REQ_OUT_FILE)" ]; then \
+		printf "→ Removing development requirements files... "; \
+		rm -f "$(DEV_REQ_IN_FILE)" "$(DEV_REQ_OUT_FILE)"; \
+		printf "$(GREEN)done$(RESET)\n"; \
 	fi
