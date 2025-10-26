@@ -8,6 +8,7 @@ DEV_REQ_IN_FILE   := dev.requirements.in
 DEV_REQ_OUT_FILE  := dev.requirements.txt
 DEFAULT_REQ       := pip==25.2 pip-tools
 ANSIBLE_REQ       := ansible ansible-lint molecule
+MKDOCS_MATERIAL   := mkdocs-material
 
 BLACK   := \033[30m
 RED     := \033[31m
@@ -27,7 +28,7 @@ UNDERLINE_OFF := \033[24m
 DIM           := \033[2m
 RESET         := \033[0m
 
-.PHONY: init upgrade clean init-ansible
+.PHONY: init upgrade clean init-ansible init-mkdocs-material
 
 init:
 	@if [ ! -d "$(VENV)" ]; \
@@ -61,6 +62,25 @@ init-ansible:
 		python3 -m venv $(VENV) && \
 		printf "$(GREEN)done$(RESET)\n"; \
 		printf "→ Installing Ansible requirements... "; \
+		$(PIP) install -r $(DEV_REQ_IN_FILE) --quiet && \
+		printf "$(GREEN)done$(RESET)\n"; \
+	else \
+		printf "Virtual environment $(VENV) is already exist\n"; \
+	fi
+
+init-mkdocs-material:
+	@if [ ! -d "$(VENV)" ]; \
+		then \
+		printf "→ Generating Material for MkDocs development requirements file... "; \
+		> $(DEV_REQ_IN_FILE); \
+		for package in $(DEFAULT_REQ) $(MKDOCS_MATERIAL); do \
+			echo $$package >> $(DEV_REQ_IN_FILE); \
+		done; \
+		printf "$(GREEN)done$(RESET)\n"; \
+		printf "→ Creating virtual environment in $(VENV)... "; \
+		python3 -m venv $(VENV) && \
+		printf "$(GREEN)done$(RESET)\n"; \
+		printf "→ Installing Material for MkDocs requirements... "; \
 		$(PIP) install -r $(DEV_REQ_IN_FILE) --quiet && \
 		printf "$(GREEN)done$(RESET)\n"; \
 	else \
