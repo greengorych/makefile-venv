@@ -7,8 +7,6 @@ PIP_SYNC          := $(VENV)/bin/pip-sync
 DEV_REQ_IN_FILE   := dev.requirements.in
 DEV_REQ_OUT_FILE  := dev.requirements.txt
 DEFAULT_REQ       := pip==25.2 pip-tools
-ANSIBLE_REQ       := ansible ansible-lint molecule
-MKDOCS_MATERIAL   := mkdocs-material
 
 BLACK   := \033[30m
 RED     := \033[31m
@@ -28,7 +26,7 @@ UNDERLINE_OFF := \033[24m
 DIM           := \033[2m
 RESET         := \033[0m
 
-.PHONY: init upgrade clean init-ansible init-mkdocs-material
+.PHONY: init upgrade clean
 
 define message_generate_requirements_file
 	printf "→ Generating %s development requirements file... " "$(1)"
@@ -127,44 +125,6 @@ init:
 		$(call message_success); \
 	else \
 		$(call message_venv_exist,$(VENV)); \
-	fi
-
-init-ansible:
-	@if [ ! -d "$(VENV)" ]; \
-		then \
-		$(call message_generate_requirements_file,Ansible); \
-		> $(DEV_REQ_IN_FILE); \
-		for package in $(DEFAULT_REQ) $(ANSIBLE_REQ); do \
-			echo $$package >> $(DEV_REQ_IN_FILE); \
-		done; \
-		$(call message_success); \
-		$(call message_create_venv,$(VENV)); \
-		$(call create_venv,$(VENV)) && \
-		$(call message_success); \
-		$(call message_install_requirements,Ansible); \
-		$(call install_requirements,$(DEV_REQ_IN_FILE)) && \
-		$(call message_success); \
-	else \
-		$(call message_venv_exist); \
-	fi
-
-init-mkdocs-material:
-	@if [ ! -d "$(VENV)" ]; \
-		then \
-		$(call message_generate_requirements_file,Material for MkDocs); \
-		> $(DEV_REQ_IN_FILE); \
-		for package in $(DEFAULT_REQ) $(MKDOCS_MATERIAL); do \
-			echo $$package >> $(DEV_REQ_IN_FILE); \
-		done; \
-		$(call message_success); \
-		$(call message_create_venv); \
-		$(call create_venv,$(VENV)) && \
-		$(call message_success); \
-		$(call message_install_requirements,Material for MkDocs); \
-		$(call install_requirements,$(DEV_REQ_IN_FILE)) && \
-		$(call message_success); \
-	else \
-		$(call message_venv_exist); \
 	fi
 
 upgrade:
