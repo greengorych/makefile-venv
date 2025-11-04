@@ -1,2 +1,5 @@
 .venv/
-*requirements*
+.make-state
+.pip-tools.toml
+requirements.in
+requirements.out
